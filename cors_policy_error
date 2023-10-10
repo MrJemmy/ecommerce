@@ -1,0 +1,23 @@
+-> we get "cors policy error" when we try to connect djagno with other frontend like React.
+-> to resolve that flow staps
+
+1. pip install django-cors-headers
+2. INSTALLED_APPS = [
+    ...,
+    "corsheaders",
+    ...,
+   ]
+3. MIDDLEWARE = [
+    ...,
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    ...,
+   ]
+4. CORS_ALLOWED_ORIGINS = [
+    "https://example.com",    # for our domain
+    "https://sub.example.com",# for sub-domain
+    "http://localhost:3000",  # React JS port
+    "http://127.0.0.1:3000",  # React JS port
+   ]
+
+5. for more study on "https://pypi.org/project/django-cors-headers/" and watch tutorials
