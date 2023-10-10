@@ -1,14 +1,30 @@
 from rest_framework import serializers
-from django.contrib.auth.models import User
+from .models import User
 
-
-class RegisterSerializer(serializers.ModelSerializer):
+class UserRegisterSerializer(serializers.ModelSerializer):
+    password2 = serializers.CharField(style={'input_type':'password'}, write_only=True)
     class Meta:
         model = User
-        fields = ('id', 'username', 'email', 'password')
-        # extra_kwargs = {'password': {'write_only': True}}
+        fields = ('email', 'first_name', 'last_name','password', 'password2')
+        extra_kwargs = {'password': {'write_only': True}}
 
-    # def create(self, validated_date):
-    #     user = User.objects.create_user(
-    #         username=validated_date['username'], email=validated_date['email'], password=validated_date['password'])
-    #     return user
+    def validate(self, attrs):
+        password = attrs.get('password')
+        password2 = attrs.get('password2')
+        if password != password2:
+            raise serializers.ValidationError("Passwords doesn't not match")
+        return attrs
+
+    def create(self, validated_data):
+        return User.objects.create_user(**validated_data)
+
+
+class UserLoginSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('email', 'password')
+
+class UserLogoutSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('email', 'password')

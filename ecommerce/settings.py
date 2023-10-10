@@ -142,10 +142,14 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
+# DRF JWT settings
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+    ),
+    # 'DEFAULT_RENDERER_CLASSES' : (
+    #   'rest_framework.renderers.JSONRenderer',
+    # )  # it will return data in simple JSON formate without web API supports.
 }
 
 SIMPLE_JWT = {

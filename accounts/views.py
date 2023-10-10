@@ -1,48 +1,41 @@
 from django.contrib.auth import authenticate, login, logout
-from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
-from django.contrib.auth.models import User
+from .models import User
 
-from rest_framework import generics
+from rest_framework import generics, status
+from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from .serializers import RegisterSerializer
+from .serializers import UserRegisterSerializer, UserLoginSerializer, UserLogoutSerializer
 
 
-class RegisterAPI(generics.GenericAPIView):
-    serializer_class = RegisterSerializer
+class UserDataAPI(generics.GenericAPIView):
+    serializer_class = UserRegisterSerializer
 
-    @method_decorator(csrf_exempt, name='dispatch')
+
+class UserRegisterAPI(APIView):
+    def post(self, request, format=None):
+        serializer = UserRegisterSerializer(data=request.data)
+        if serializer.is_valid(): # raise_exception=True
+            serializer.save()
+            return Response({'msg' : 'Registration Success'}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserLoginAPI(APIView):
+    def post(self, request, format=None):
+        serializer = UserLoginSerializer(data=request.data)
+        if serializer.is_valid():  # raise_exception=True
+            user = authenticate(request, username=serializer.data['email'], password=serializer.data['password'])
+            if user is not None:
+                login(request, user)
+                return Response({'msg': f'{user} is logged in successfully'}, status=status.HTTP_200_OK)
+            return Response({'msg': 'invalid email of password'}, status=status.HTTP_404_NOT_FOUND)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserLogoutAPI(APIView):
     def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = serializer.save()
-        print(user)
-        return Response({'user' : serializer.data})
-
-
-class LoginAPI(generics.GenericAPIView):
-    serializer_class = RegisterSerializer
-
-    @method_decorator(csrf_exempt, name='dispatch')
-    def post(self, request, *args, **kwargs):
-        # serializer = self.get_serializer(data=request.data)
-        # if serializer.is_valid(raise_exception=True):
-        user = authenticate(request, username=request.data['username'], password=request.data['password'])
-        if user is None:
-            return Response({'info': 'invalid username or password'})
-        login(request, user)
-        return Response({'info': f'{user} is logged in'})
-
-
-class LogoutAPI(generics.GenericAPIView):
-    serializer_class = RegisterSerializer
-
-    @method_decorator(csrf_exempt, name='dispatch')
-    def post(self, request, *args, **kwargs):
-        user = self.get_serializer(User.objects.get())
-        # if serializer.is_valid(raise_exception=True):
-        if request.user.username == '':
-            return Response({'info': 'user is not logged in'})
-        logout(request)
-        return Response({'info': f'{request.user.username} is logged out'})
+        serializer = UserLogoutSerializer(data=request.data)
+        if serializer.is_valid():
+            logout(request)
+            return Response({'info':'User is logged out'})
