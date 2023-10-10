@@ -20,11 +20,13 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 
 
 class UserLoginSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField(required=True)
     class Meta:
         model = User
         fields = ('email', 'password')
 
 class UserLogoutSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField(required=True)
     class Meta:
         model = User
         fields = ('email', 'password')

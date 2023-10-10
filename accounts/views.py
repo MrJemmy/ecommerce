@@ -25,11 +25,12 @@ class UserLoginAPI(APIView):
     def post(self, request, format=None):
         serializer = UserLoginSerializer(data=request.data)
         if serializer.is_valid():  # raise_exception=True
-            user = authenticate(request, username=serializer.data['email'], password=serializer.data['password'])
+            user = authenticate(request, username=serializer.validated_data['email'],
+                                password=serializer.validated_data['password'])
             if user is not None:
                 login(request, user)
                 return Response({'msg': f'{user} is logged in successfully'}, status=status.HTTP_200_OK)
-            return Response({'msg': 'invalid email of password'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'msg': 'invalid email or password'}, status=status.HTTP_404_NOT_FOUND)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
