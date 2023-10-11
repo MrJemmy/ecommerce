@@ -30,3 +30,11 @@ class UserLogoutSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('email', 'password')
+
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField(required=True)
+    class Meta:
+        model = User
+        # fields = '__all__'
+        exclude = ['password']
