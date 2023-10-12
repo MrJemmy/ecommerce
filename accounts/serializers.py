@@ -1,11 +1,13 @@
 from rest_framework import serializers
 from .models import User
 
+
 class UserRegisterSerializer(serializers.ModelSerializer):
-    password2 = serializers.CharField(style={'input_type':'password'}, write_only=True)
+    password2 = serializers.CharField(style={'input_type': 'password'}, write_only=True)
+
     class Meta:
         model = User
-        fields = ('email', 'first_name', 'last_name','password', 'password2')
+        fields = ('email', 'first_name', 'last_name', 'password', 'password2')
         extra_kwargs = {'password': {'write_only': True}}
 
     def validate(self, attrs):
@@ -21,20 +23,42 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 
 class UserLoginSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(required=True)
+
     class Meta:
         model = User
         fields = ('email', 'password')
 
+
 class UserLogoutSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(required=True)
+
     class Meta:
         model = User
         fields = ('email', 'password')
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
-    email = serializers.EmailField(required=True)
     class Meta:
         model = User
         # fields = '__all__'
         exclude = ['password']
+
+
+class UserChangePasswordSerializer(serializers.Serializer):
+    password = serializers.CharField(max_length=255, required=True, style={'input_type': 'password'})
+    password2 = serializers.CharField(max_length=255, required=True, style={'input_type': 'password'})
+
+    def validate(self, attrs):
+        user = self.context.get('user')
+        password = attrs.get('password')
+        password2 = attrs.get('password2')
+        if password != password2:
+            raise serializers.ValidationError("Passwords doesn't not match")
+        user.set_password(password)
+        user.save()
+        return attrs
+
+
+class ResetPasswordSerializer(serializers.ModelSerializer):
+    model = User
+    field = ('email', )
