@@ -156,3 +156,14 @@ SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=10),
     # https://django-rest-framework-simplejwt.readthedocs.io/en/latest/settings.html  Learn more.
 }
+
+PASSWORD_RESET_TIMEOUT=900  # 900 Sec = 15 Min  # rest password link will be valid for 15 minutes.
+
+
+# Email Configurations
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'my_email_id@mail.com'
+EMAIL_HOST_PASSWORD = 'my_password'
+EMAIL_USE_TLS = True
