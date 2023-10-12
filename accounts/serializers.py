@@ -3,6 +3,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 
 from rest_framework import serializers
+from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import User
 from .utils import Util
@@ -35,14 +36,15 @@ class UserLoginSerializer(serializers.ModelSerializer):
         fields = ('email', 'password')
 
 
-class UserLogoutSerializer(serializers.ModelSerializer):
-    email = serializers.EmailField(required=True)
+class UserLogoutSerializer(serializers.Serializer):
+    refresh = serializers.CharField(required=True)
 
-    class Meta:
-        model = User
-        fields = ('email', 'password')
+    def validate(self, attrs):
+        self.token = attrs['refresh']
+        return attrs
 
-
+    def save(self, **kwargs):
+        RefreshToken(self.token).blacklist()
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -79,7 +81,7 @@ class ResetPasswordLinkSerializer(serializers.Serializer):
             'body' : link,  # make it batter.
             'to_email' : user.email,
         }
-        Util.send_email(data)
+        # Util.send_email(data)
         return attrs
 
 
