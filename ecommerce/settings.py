@@ -148,6 +148,7 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+    'EXCEPTION_HANDLER': 'accounts.renderers.custom_exception_handler',
     # 'DEFAULT_RENDERER_CLASSES' : (
     #   'rest_framework.renderers.JSONRenderer',
     # )  # it will return data in simple JSON formate without web API supports.

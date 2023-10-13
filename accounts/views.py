@@ -9,12 +9,12 @@ from .serializers import (
     UserRegisterSerializer, UserLoginSerializer, UserLogoutSerializer, UserProfileSerializer,
     UserChangePasswordSerializer, ResetPasswordLinkSerializer, ResetPasswordSerializer
 )
-from .renderers import UserRenderers
+# from .renderers import UserRenderers
 from .utils import get_token_and_login
 
 
 class UserRegisterAPI(APIView):
-    renderer_classes = [UserRenderers]
+    # renderer_classes = [UserRenderers]
 
     def post(self, request, *args, **kwargs):
         serializer = UserRegisterSerializer(data=request.data)
@@ -28,7 +28,7 @@ class UserRegisterAPI(APIView):
 
 
 class UserLoginAPI(APIView):
-    renderer_classes = [UserRenderers]
+    # renderer_classes = [UserRenderers]
 
     def post(self, request, *args, **kwargs):
         serializer = UserLoginSerializer(data=request.data)
@@ -45,7 +45,7 @@ class UserLoginAPI(APIView):
 
 
 class UserLogoutAPI(APIView):
-    renderer_classes = [UserRenderers]
+    # renderer_classes = [UserRenderers]
     permission_classes = [IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
@@ -57,7 +57,7 @@ class UserLogoutAPI(APIView):
 
 
 class UserProfileAPI(APIView):
-    renderer_classes = [UserRenderers]
+    # renderer_classes = [UserRenderers]
     permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
@@ -66,7 +66,7 @@ class UserProfileAPI(APIView):
 
 
 class UserChangePasswordAPI(APIView):
-    renderer_classes = [UserRenderers]
+    # renderer_classes = [UserRenderers]
     permission_classes = [IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
@@ -76,7 +76,7 @@ class UserChangePasswordAPI(APIView):
 
 
 class SendResetPasswordLinkAPI(APIView):
-    renderer_classes = [UserRenderers]
+    # renderer_classes = [UserRenderers]
     permission_classes = [IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
@@ -86,7 +86,7 @@ class SendResetPasswordLinkAPI(APIView):
 
 
 class UserResetPasswordAPI(APIView):
-    renderer_classes = [UserRenderers]
+    # renderer_classes = [UserRenderers]
     permission_classes = [IsAuthenticated]
 
     def post(self, request, uid, token, *args, **kwargs):
