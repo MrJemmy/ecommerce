@@ -17,7 +17,7 @@ class UserAdmin(BaseUserAdmin):
     fieldsets = [
         ("User Credentials", {"fields": ["email", "password"]}),
         ("Personal info", {"fields": ["first_name", "last_name", "phone_no", "type"]}),
-        ("Permissions", {"fields": ["is_admin"]}),
+        ("Permissions", {"fields": ["is_admin", "groups"]}),
     ]
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
     # overrides get_fieldsets to use this attribute when creating a user.
@@ -32,7 +32,7 @@ class UserAdmin(BaseUserAdmin):
     ]
     search_fields = ["email", "id", "first_name", "last_name", "phone_no"]
     ordering = ["email", "id"]
-    filter_horizontal = []
+    filter_horizontal = ['groups']
 
 
 # Now register the new UserAdmin...
