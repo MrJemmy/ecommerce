@@ -16,7 +16,6 @@ from datetime import timedelta
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -27,7 +26,6 @@ SECRET_KEY = 'django-insecure-q=c^tp=ietdkih(l1*n%hz+s=m4!xd04oavky3*h)ys^fxv3#u
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -43,7 +41,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
-    'silk',
     # created
     'accounts',
 ]
@@ -57,8 +54,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # external
-    'silk.middleware.SilkyMiddleware',
 ]
 
 ROOT_URLCONF = 'ecommerce.urls'
@@ -80,7 +75,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'ecommerce.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -135,7 +129,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
@@ -145,7 +138,6 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
 
 # DRF JWT settings
 REST_FRAMEWORK = {
@@ -163,8 +155,7 @@ SIMPLE_JWT = {
     # https://django-rest-framework-simplejwt.readthedocs.io/en/latest/settings.html  Learn more.
 }
 
-PASSWORD_RESET_TIMEOUT=900  # 900 Sec = 15 Min  # rest password link will be valid for 15 minutes.
-
+PASSWORD_RESET_TIMEOUT = 900  # 900 Sec = 15 Min  # rest password link will be valid for 15 minutes.
 
 # Email Configurations
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -173,3 +164,7 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'my_email_id@mail.com'
 EMAIL_HOST_PASSWORD = 'my_password'
 EMAIL_USE_TLS = True
+
+if DEBUG:
+    INSTALLED_APPS.append('silk')
+    MIDDLEWARE.append('silk.middleware.SilkyMiddleware')
