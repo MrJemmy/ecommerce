@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, Group, PermissionsMixin
 from .manager import UserManager
-from django_enum import EnumField
 
 
 class User(AbstractBaseUser, PermissionsMixin):
