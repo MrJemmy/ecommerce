@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.conf.global_settings import DEBUG
+from .settings import DEBUG
 from django.urls import path, include
 
 urlpatterns = [
