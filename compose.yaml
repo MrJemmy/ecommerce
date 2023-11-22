@@ -1,0 +1,20 @@
+services:
+  ecommerce:
+    build:
+      dockerfile: Dockerfile  # defaut docker look into this
+      context: .
+    ports:
+      - 8000:8000
+    volumes:
+      - ecommerce:/ecommerce
+    image: ecommerce:0.1
+    container_name: ecommerce
+    command: python manage.py runserver 0.0.0.0:8000
+    develop:
+      watch:
+        - action: rebuild
+          path: .
+          target: .
+
+volumes:
+  ecommerce:
