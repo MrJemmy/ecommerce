@@ -12,7 +12,7 @@ services:
     container_name: ecommerce
     command: >
       sh -c "python3 manage.py migrate &&
-      python3 manage.py runserver 0.0.0.0:8000"
+      gunicorn ecommerce.wsgi:application --bind 0.0.0.0:8000"
     depends_on:
       - db
     develop:
@@ -20,6 +20,17 @@ services:
         - action: rebuild
           path: .
           target: .
+  nginx:
+    build: ./nginx
+    restart: always
+    container_name: nginx
+    volumes:
+      - ecommerce:/ecommerce
+    ports:
+      - 80:80
+    depends_on:
+      - ecommerce
+      - db
 
   db:
     image: postgres:16.1-alpine3.18

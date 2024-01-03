@@ -5,6 +5,7 @@ from accounts.serializers import UserRegisterSerializer
 
 class ProductSerializer(serializers.ModelSerializer):
     seller = UserRegisterSerializer(source='user', read_only=True)
+
     class Meta:
         model = Product
         fields = [
@@ -19,4 +20,3 @@ class ProductSerializer(serializers.ModelSerializer):
         print(self.context.get('request').user)
         validated_data['user'] = self.context.get('request').user
         return super().create(validated_data)
-

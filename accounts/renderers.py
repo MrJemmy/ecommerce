@@ -1,17 +1,4 @@
 from rest_framework.views import exception_handler
-import json
-
-# from rest_framework import renderers
-# class UserRenderers(renderers.JSONRenderer):
-#     charset = 'utf-8'
-#
-#     def render(self, data, accepted_media_type=None, renderer_context=None):
-#         response = ''
-#         if 'ErrorDetail' in str(data):
-#             response = json.dumps({'errors': data})
-#         else:
-#             response = json.dumps(data)
-#         return response
 
 
 def custom_exception_handler(exc, context):

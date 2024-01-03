@@ -18,6 +18,7 @@ class SearchFilterNew(SearchFilter):
         params = params.split(',')
         params = [param.strip() for param in params]
         return params
+
     def filter_queryset(self, request, queryset, view):
         search_fields = self.get_search_fields(view, request)
         search_terms = self.get_search_terms(request)

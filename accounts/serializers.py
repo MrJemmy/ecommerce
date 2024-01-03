@@ -77,9 +77,9 @@ class ResetPasswordLinkSerializer(serializers.Serializer):
         link = f'http://localhost:3000/reset/{uid}/{token}/'
         print('Password Reset Link : ', link)
         data = {
-            'subject' : 'Reset Your Password',
-            'body' : link,  # make it batter.
-            'to_email' : user.email,
+            'subject': 'Reset Your Password',
+            'body': link,  # make it batter.
+            'to_email': user.email,
         }
         # Util.send_email(data)
         return attrs
